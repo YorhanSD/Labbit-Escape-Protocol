@@ -15,6 +15,7 @@ public class Aldos_IA : MonoBehaviour
     public AudioClip roleta;
     public AudioClip metalImpacto;
     public AudioClip risada;
+    public AudioClip somTiro;
     public GameObject seringa;
     public GameObject serra;
     public Transform posicaoPlayer;
@@ -66,26 +67,28 @@ public class Aldos_IA : MonoBehaviour
     }
     public void SeguirPlayer()
     {
-        anim.SetFloat("velocidade", Mathf.Abs(rigid2D.velocity.x));
+        anim.SetFloat("velocidade", Mathf.Abs(rigid2D.linearVelocity.x));
 
         distanciaDoPlayer = posicaoPlayer.transform.position - transform.position;
 
         if (podeAtacar == true && Mathf.Abs(distanciaDoPlayer.x) < rangeMaximo && Mathf.Abs(distanciaDoPlayer.x) > rangeMinimo)
         {
             //inimigo se move em direcao ao player
-            rigid2D.velocity = new Vector2(velocidade * (distanciaDoPlayer.x / Mathf.Abs(distanciaDoPlayer.x)), rigid2D.velocity.y);
+            rigid2D.linearVelocity = new Vector2(velocidade * (distanciaDoPlayer.x / Mathf.Abs(distanciaDoPlayer.x)), rigid2D.linearVelocity.y);
         }
         else
         {
-            rigid2D.velocity = new Vector2(0, rigid2D.velocity.y);
+            //rigid2D.linearVelocity = new Vector2(0, rigid2D.linearVelocity.y);
+
+            rigid2D.linearVelocity = Vector2.zero; //Zera a velocidade do personagem por completo
         }
 
 
-        if (rigid2D.velocity.x < 0 && sprite.flipX == true)//Se a velocidade do inimigo for maior que zero entao:
+        if (rigid2D.linearVelocity.x < 0 && sprite.flipX == true)//Se a velocidade do inimigo for maior que zero entao:
         {
             Flip();
         }
-        else if (rigid2D.velocity.x > 0 && sprite.flipX == false)//Se a velocidade do inimigo for menor que zero entao:
+        else if (rigid2D.linearVelocity.x > 0 && sprite.flipX == false)//Se a velocidade do inimigo for menor que zero entao:
         {
             Flip();
         }
@@ -233,17 +236,20 @@ public class Aldos_IA : MonoBehaviour
     }
     public bool probabilidadeAtirar()
     {
-        numeroAleatorio = Random.Range(1, 3);
-
-        if (numeroAleatorio == 1)
+        if (this.gameObject != null)
         {
-            StartCoroutine(Atirar());
+            numeroAleatorio = Random.Range(1, 4);
 
-            return false;
-        }
-        else
-        {
-            StartCoroutine(Atirar_Plus());
+            if (numeroAleatorio == 1)
+            {
+                StartCoroutine(Atirar());
+
+                return false;
+            }
+            else
+            {
+                StartCoroutine(Atirar_Plus());
+            }
         }
 
         return false;
@@ -251,7 +257,7 @@ public class Aldos_IA : MonoBehaviour
     }
     public bool probabilidadeAtaqueBasico()
     {
-        numeroAleatorio = Random.Range(1, 3);
+        numeroAleatorio = Random.Range(1, 4);
 
         if (numeroAleatorio == 1)
         {
@@ -281,6 +287,13 @@ public class Aldos_IA : MonoBehaviour
             //Importa o void inicializar com o componente de direcao do script da cenoura
             seringaTemp.GetComponent<Seringa>().Inicializar(Vector2.left);
         }
+
+        SomTiro();
+    }
+    public void SomTiro()
+    {
+        aS.clip = somTiro;
+        aS.Play();
     }
 
     public void SerraMovimento()

@@ -27,6 +27,7 @@ public class Visor_Itens : MonoBehaviour
     [SerializeField] private Inventario inventario;
     [SerializeField] private Seleciona_Itens selecionaItens;
 
+    [System.Obsolete]
     void Awake()
     {
         cenouraAzul = GameObject.FindObjectOfType<Cenoura_Azul>();

@@ -17,7 +17,8 @@ public class Player_Movimento : MonoBehaviour
     [SerializeField] private Player_Bencaos playerBencaos;
     [SerializeField] private Player_Physics playerPhysics;
 
-    private SpriteRenderer sr;
+    public SpriteRenderer sr;
+   
     private Rigidbody2D rigid2D;
     private Animator anim;
     private bool imobilizado;
@@ -30,6 +31,7 @@ public class Player_Movimento : MonoBehaviour
     public AudioSource aS;
     public AudioClip audioPulo;
 
+    [System.Obsolete]
     public void SetPlayerVelocidade(float _velocidade)
     {
         velocidade = _velocidade;
@@ -48,6 +50,7 @@ public class Player_Movimento : MonoBehaviour
     }
     public void SetPlayerImobilizado(bool _imobilizado)
     {
+        rigid2D.linearVelocity = Vector2.zero;
         imobilizado = _imobilizado;
     }
     public bool GetPlayerImobilizado()
@@ -57,6 +60,22 @@ public class Player_Movimento : MonoBehaviour
     public void SetPlayerConfuso(bool _confuso)
     {
         confuso = _confuso;
+
+        if (confuso == true) 
+        {
+            sr.color = Color.green;
+        }
+        else
+        {
+            if (playerBencaos.GetRessuscitar() == true)
+            {
+                sr.color = Color.mediumPurple;
+            }
+            else
+            {
+                sr.color = Color.white;
+            }
+        }
     }
     public bool GetPlayerConfuso()
     {
@@ -90,7 +109,7 @@ public class Player_Movimento : MonoBehaviour
         {
             aS.clip = audioPulo;
             aS.Play();
-            rigid2D.velocity = Vector2.up * forcaPulo; //Player vai ser impulsionado para cima vezes a forcaPulo
+            rigid2D.linearVelocity = Vector2.up * forcaPulo; //Player vai ser impulsionado para cima vezes a forcaPulo
         }
 
         playerPhysics.SetNoChao(noChao);
@@ -105,7 +124,8 @@ public class Player_Movimento : MonoBehaviour
     {
         if (GetPlayerImobilizado() == true)
         {
-            rigid2D.velocity = new Vector2(0, 0);
+            //rigid2D.linearVelocity = new Vector2(0, 0);
+            rigid2D.linearVelocity = Vector2.zero;
 
             anim.SetFloat("Walking", Mathf.Abs(0));
             anim.SetFloat("Jump", Mathf.Abs(0));
@@ -113,9 +133,9 @@ public class Player_Movimento : MonoBehaviour
             return false;
         }
 
-        if (GetPlayerConfuso() == true)
+        if (GetPlayerConfuso() == true && playerBencaos.GetRessuscitar() == false)
         {
-            sr.color = Color.green;
+            sr.color = Color.green; //Deixa o Player Verde
 
             return false;
         }
@@ -124,10 +144,10 @@ public class Player_Movimento : MonoBehaviour
 
         //Controle de Animação no Eixo X e Y
 
-        anim.SetFloat("Walking", Mathf.Abs(rigid2D.velocity.x));
-        anim.SetFloat("Jump", Mathf.Abs(rigid2D.velocity.y));
+        anim.SetFloat("Walking", Mathf.Abs(rigid2D.linearVelocity.x));
+        anim.SetFloat("Jump", Mathf.Abs(rigid2D.linearVelocity.y));
 
-        rigid2D.velocity = new Vector2(movimento * velocidade, rigid2D.velocity.y);
+        rigid2D.linearVelocity = new Vector2(movimento * velocidade, rigid2D.linearVelocity.y);
 
         Flip(movimento);
 
@@ -152,18 +172,18 @@ public class Player_Movimento : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D _player)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_player.gameObject.tag.Equals("Plataforma"))
+        if (collision.gameObject.CompareTag("Plataforma"))
         {
-            this.transform.parent = _player.transform;
+            transform.parent = collision.transform;
         }
     }
-    void OnCollisionExit2D(Collision2D _player)
+    void OnCollisionExit2D(Collision2D collision)
     {
-        if (_player.gameObject.tag.Equals("Plataforma"))
+        if (collision.gameObject.CompareTag("Plataforma"))
         {
-            this.transform.parent = null;
+            transform.parent = null;
         }
     }
 
@@ -182,7 +202,6 @@ public class Player_Movimento : MonoBehaviour
         SetPlayerConfuso(true);
         yield return new WaitForSeconds(2f);
         SetPlayerConfuso(false);
-        sr.color = Color.white;
     }
 
 

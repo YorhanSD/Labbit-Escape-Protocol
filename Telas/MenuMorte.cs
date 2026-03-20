@@ -6,10 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class MenuMorte : MonoBehaviour
 {
+    Ativa_JogoSalvo ajs;
     public GameObject telaMorte;
     public GameObject telaPergunta;
     public string restart;
-    
+    public string telaInicial;
+
+    public void Start()
+    {
+        ajs = GetComponent<Ativa_JogoSalvo>();
+    }
     public void AtivaTelaMorte()
     {
         Time.timeScale = 0f;
@@ -33,8 +39,12 @@ public class MenuMorte : MonoBehaviour
         // Editor unity
         //UnityEditor.EditorApplication.isPlaying = false;
 
-        //Jogo compilado - comentar a linha acima e descomentar a abaixo antes de gerar a build
+        //Jogo compilado - comentar a linha acima e descomentar a debaixo antes de gerar a build
         Application.Quit();
         //Debug.Log("Saiu");
+    }
+    public void BotaoMenuInicial()
+    {
+        SceneManager.LoadScene(telaInicial);
     }
 }

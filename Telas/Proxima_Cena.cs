@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class Proxima_Cena : MonoBehaviour
 {
     public string cena;
+    public float tempoEspera;
     void Start()
     {
         StartCoroutine(esperaCena());
@@ -14,7 +15,7 @@ public class Proxima_Cena : MonoBehaviour
 
     IEnumerator esperaCena()
     {
-        yield return new WaitForSeconds(32f);
+        yield return new WaitForSeconds(tempoEspera);
         SceneManager.LoadScene(cena);
     }
     public void BotaoPular()

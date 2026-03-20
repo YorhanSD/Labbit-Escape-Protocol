@@ -9,15 +9,21 @@ public class Efeitos_Visuais : MonoBehaviour
 {
     public float transparencia = 0;
 
-    //[SerializeField] private Camera_Segue cameraSegue;
     [SerializeField] private Controle_Emocional controleEmocional;
 
+    public Audio_Controle aC;
     public AudioSource aS;
+    public AudioClip somCoelhoDestemido;
     public AudioClip trocaEstado;
     public Light2D luzGlobalCoragem;
     public Light2D luzGlobalMedo;
     public Light2D luzGlobalNormal;
 
+    [System.Obsolete]
+    public void Start()
+    {
+        aC = FindObjectOfType<Audio_Controle>();
+    }
     private void FixedUpdate()
     {
         VerificaBarra();
@@ -91,5 +97,60 @@ public class Efeitos_Visuais : MonoBehaviour
         {
             luzGlobalMedo.intensity += 0.1f * Time.deltaTime;
         }
+    }
+
+    public void EfeitoCoelhoDestemido()
+    {
+        StartCoroutine(PiscarLuzGlobal());
+    }
+
+    IEnumerator PiscarLuzGlobal()
+    {
+        StartCoroutine(BloquearMusica());
+
+        SomDestemido();
+
+        luzGlobalCoragem.intensity = 0f;
+
+        luzGlobalMedo.intensity = 0f;
+
+        luzGlobalCoragem.gameObject.SetActive(false);
+
+        luzGlobalMedo.gameObject.SetActive(false);
+
+        luzGlobalNormal.intensity = 1f;
+        yield return new WaitForSeconds(0.3f);
+        luzGlobalNormal.intensity = 0f;
+        yield return new WaitForSeconds(0.7f);
+        luzGlobalNormal.intensity = 1f;
+        yield return new WaitForSeconds(0.3f);
+        luzGlobalNormal.intensity = 0f;
+        yield return new WaitForSeconds(0.7f);
+        luzGlobalNormal.intensity = 0.3f;
+    }
+
+    public void SomDestemido()
+    {
+        aS.clip = somCoelhoDestemido;
+        aS.Play();
+    }
+
+    public void ParaMusica()
+    {
+        StartCoroutine(BloquearMusica());
+    }
+
+    public IEnumerator BloquearMusica()
+    {
+        if(aC.botaoMutar[1].isOn == false)
+        {
+            aC.botaoMutar[1].isOn = true;
+            yield return new WaitForSeconds(7f);
+            aC.botaoMutar[1].isOn = false;
+        }
+        else
+        {
+            Debug.Log("Música já está mutada");
+        }       
     }
 }

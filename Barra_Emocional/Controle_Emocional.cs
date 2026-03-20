@@ -23,6 +23,7 @@ public class Controle_Emocional : MonoBehaviour
         emocaoSlider.value = 50;
     }
 
+    [System.Obsolete]
     void Update()
     {
         if (emocaoSlider != null)
@@ -59,6 +60,7 @@ public class Controle_Emocional : MonoBehaviour
         }
     }
 
+    [System.Obsolete]
     void NivelEmocional()
     {
         if (emocaoSlider.value > 99)

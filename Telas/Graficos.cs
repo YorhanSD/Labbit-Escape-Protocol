@@ -31,15 +31,19 @@ public class Graficos : MonoBehaviour
     }
     public void CalculaFPS()
     {
-        textoFPS.text = "FPS " + (1f / Time.deltaTime).ToString("00");
+        if (textoFPS != null)
+        {
+            textoFPS.text = "FPS " + (1f / Time.deltaTime).ToString("00");
+        }
     }
     private void Start()
     {
         InvokeRepeating(nameof(CalculaFPS), 0f, 1f);
     }
-    private void Update()
+    
+    public void BotaoFPS()
     {
-        if(botaoFPS.isOn == true && botaoFPS != null)
+        if (botaoFPS.isOn == true)
         {
             contadorFPS.SetActive(true);
         }

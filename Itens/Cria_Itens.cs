@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 public class Cria_Itens : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class Cria_Itens : MonoBehaviour
     DNA_Verde dnaVerde;
     DNA_Preto dnaPreto;
 
+    [System.Obsolete]
     private void Awake()
     {
         cenouraLaranja = GameObject.FindObjectOfType<Cenoura_Laranja>();
@@ -43,11 +45,14 @@ public class Cria_Itens : MonoBehaviour
 
     }
 
+    
+
     public void CriaCenouraLaranja()
     {
         cenouraLaranja.SetNome("Cenoura Laranja");
         cenouraLaranja.SetQuantidade(3);
-        cenouraLaranja.SetHabilidade("[X] Atacar [C] Curar Vida");
+        //cenouraLaranja.SetHabilidade("[X] Atacar [C] Curar Vida");
+        //TraducaoDica(cenouraLaranja);
 
         //iT.SetRecebeMenssagem("[X] Atacar [C] Curar Vida");
 
@@ -63,7 +68,8 @@ public class Cria_Itens : MonoBehaviour
     {
         cenouraPreta.SetNome("Cenoura Preta");
         cenouraPreta.SetQuantidade(3);
-        cenouraPreta.SetHabilidade("[X] Atacar [C] Curar Vida");
+        //cenouraPreta.SetHabilidade("[X] Atacar [C] Curar Vida");
+        //TraducaoDica(cenouraPreta);
 
         //iT.SetRecebeMenssagem("[X] Atacar [C] Curar Vida");
 
@@ -93,7 +99,8 @@ public class Cria_Itens : MonoBehaviour
     {
         superCenouraAzul.SetNome("Super Cenoura Azul");
         superCenouraAzul.SetQuantidade(1);
-        superCenouraAzul.SetHabilidade("[X] Atacar [C] Imunidade a Laser");
+        //superCenouraAzul.SetHabilidade("[X] Atacar [C] Imunidade a Laser");
+        //TraducaoDica(superCenouraAzul);
 
         //iT.SetRecebeMenssagem("[X] Atacar [C] Ativa Imunidade Ultravioleta");
 
@@ -108,7 +115,8 @@ public class Cria_Itens : MonoBehaviour
     {
         superCenouraLaranja.SetNome("Super Cenoura Laranja");
         superCenouraLaranja.SetQuantidade(1);
-        superCenouraLaranja.SetHabilidade("[X] Atacar [C] Ativa Regenerar");
+        //superCenouraLaranja.SetHabilidade("[X] Atacar [C] Ativa Regenerar");
+        //TraducaoDica(superCenouraLaranja);
 
         //iT.SetRecebeMenssagem("[X] Atacar [C] Ativa Regenerar");
 
@@ -123,7 +131,8 @@ public class Cria_Itens : MonoBehaviour
     {
         superCenouraPreta.SetNome("Super Cenoura Preta");
         superCenouraPreta.SetQuantidade(1);
-        superCenouraPreta.SetHabilidade("[X] Atacar [C] Ativa Ressuscitar");
+        //superCenouraPreta.SetHabilidade("[X] Atacar [C] Ativa Ressuscitar");
+        //TraducaoDica(superCenouraPreta);
 
         //iT.SetRecebeMenssagem("[X] Atacar [C] Ativa Ressuscitar");
 
@@ -138,7 +147,8 @@ public class Cria_Itens : MonoBehaviour
     {
         superCenouraVerde.SetNome("Super Cenoura Verde");
         superCenouraVerde.SetQuantidade(1);
-        superCenouraVerde.SetHabilidade("[X] Atacar [C] Ativa Imunidade a Toxicidade");
+        //superCenouraVerde.SetHabilidade("[X] Atacar [C] Ativa Imunidade a Toxicidade");
+        //TraducaoDica(superCenouraVerde);
 
         //iT.SetRecebeMenssagem("[X] Atacar [C] Ativa Imunidade a Toxicidade");
 

@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using UnityEngine.SceneManagement; //necess�rio para ter controle das cenas
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Localization.Settings;
 
 public class Menu : MonoBehaviour
 {
+    private bool ativaTraducao;
+
+    public Ativa_JogoSalvo ajs;
+    public CheckPoint checkPoint;
+    public PontuacaoControle pC;
+
     public string cena;
     public string voltarCena;
     public string cenaFases;
@@ -20,10 +27,33 @@ public class Menu : MonoBehaviour
     public GameObject painelResolucoes;
     public GameObject painelGraficos;
     public GameObject painelAudio;
+    public GameObject painelConquistas;
+    public GameObject painelIdiomas;
+    public GameObject painelCreditos;
+    public GameObject painelEstatisticas;
+
+    private void Awake()
+    {
+        checkPoint = GetComponent<CheckPoint>();
+
+        if (checkPoint.JogoSalvo() != null)
+        {
+            checkPoint.JogoSalvo();
+        }
+    }
 
     void Start()
     {
         Time.timeScale = 1f;
+
+        if(pC != null)
+        {
+            pC = GetComponent<PontuacaoControle>();
+        }
+        if (ajs != null)
+        {
+            ajs = GetComponent<Ativa_JogoSalvo>();
+        }
     }
     void PauseScreen()
     {
@@ -66,6 +96,32 @@ public class Menu : MonoBehaviour
        Application.Quit();
     }
 
+    public void IniciaTraducao(string codigoIdioma)
+    {
+        if (ativaTraducao)
+            return;
+
+        StartCoroutine(MudaLingua(codigoIdioma));
+    }
+
+    public IEnumerator MudaLingua(string codigoIdioma)
+    {
+        ativaTraducao = true;
+
+        yield return LocalizationSettings.InitializationOperation;
+
+        foreach (var locale in LocalizationSettings.AvailableLocales.Locales)
+        {
+            if (locale.Identifier.Code.StartsWith(codigoIdioma))
+            {
+                Debug.Log("Mudando para: " + locale.Identifier.Code);
+                LocalizationSettings.SelectedLocale = locale;
+                break;
+            }
+        }
+
+        ativaTraducao = false;
+    }
     public void ShowOptions()
     {
         painelOpcoes.SetActive(true);
@@ -77,13 +133,58 @@ public class Menu : MonoBehaviour
     }
     public void BotaoVoltarMenu()
     {
-        painelOpcoes.SetActive(false);
-        painelResolucoes.SetActive(false);
-        painelControles.SetActive(false);
-        painelGraficos.SetActive(false);
-        painelAudio.SetActive(false);
-    }
+        if (painelOpcoes != null)
+        {
+            painelOpcoes.SetActive(false);
+        }
+        if (painelResolucoes != null)
+        {
+            painelResolucoes.SetActive(false);
+        }
+        if (painelControles != null)
+        {
+            painelControles.SetActive(false);
+        }
+        if (painelGraficos != null)
+        {
+            painelGraficos.SetActive(false);
+        }
+        if (painelAudio != null)
+        {
+            painelAudio.SetActive(false);
+        }
+        if (painelEstatisticas != null)
+        {
+            painelEstatisticas.SetActive(false); 
+            pC.TelaAtivada();            
+            //pC.jogadorAbriuEstatisticas = false;
+        }
 
+        if(painelCreditos != null && painelConquistas != null && painelIdiomas != null)
+        {
+            painelConquistas.SetActive(false);
+            painelIdiomas.SetActive(false);
+            painelCreditos.SetActive(false);
+        }
+    }
+    public void PainelEstasticas()
+    {
+        painelEstatisticas.SetActive(true);
+        //pC.jogadorAbriuEstatisticas = true;
+        pC.TelaAtivada();
+    }
+    public void PainelCreditos()
+    {
+        painelCreditos.SetActive(true);
+    }
+    public void PainelIdiomas()
+    {
+        painelIdiomas.SetActive(true);
+    }
+    public void PainelConquistas()
+    {
+        painelConquistas.SetActive(true);
+    }
     public void PainelResolucoes()
     {
         painelResolucoes.SetActive(true);
@@ -117,6 +218,13 @@ public class Menu : MonoBehaviour
     public void BotaoNovoJogo()
     {
         RemoveJogoSalvo();
+
+        StartCoroutine(Cerregamento());
+    }
+
+    public IEnumerator Cerregamento()
+    {
+        yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(novoJogo);
     }
 
@@ -129,4 +237,5 @@ public class Menu : MonoBehaviour
             File.Delete(caminho + "/labbitJogoSalvo.save");
         }
     }
+    
 }

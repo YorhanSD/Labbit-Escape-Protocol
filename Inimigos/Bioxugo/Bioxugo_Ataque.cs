@@ -57,8 +57,9 @@ public class Bioxugo_Ataque : Ataque
 
             anim.SetTrigger("Attack");
 
-            rigi2D.velocity = new Vector2(0, rigi2D.velocity.y);
-            anim.SetFloat("velocidade", 0);
+            //rigi2D.linearVelocity = Vector2.zero;
+
+            //anim.SetFloat("velocidade", 0);
         }
     }
 
@@ -101,17 +102,17 @@ public class Bioxugo_Ataque : Ataque
                 posicaoX -= 5;
             }
 
-            Debug.Log($"Posição X da Rajada {i} : {posicaoX}");
+            //Debug.Log($"Posiï¿½ï¿½o X da Rajada {i} : {posicaoX}");
             Choque[i].localPosition = new Vector2(posicaoX, posicaoY);
         }
     }
 
     public void PosicaoConjurarTrovao(float posicaoX, float posicaoY)
     {
-        for (int i = 3; i < 6; i++) // Conjurar Trovão
+        for (int i = 3; i < 6; i++) // Conjurar Trovï¿½o
         {
             posicaoY -= 5;
-            Debug.Log($"Posição Y do Raio {i} : {posicaoY}");
+            //Debug.Log($"Posiï¿½ï¿½o Y do Raio {i} : {posicaoY}");
             Choque[i].localPosition = new Vector2(posicaoX, posicaoY);
         }
     }
@@ -126,6 +127,12 @@ public class Bioxugo_Ataque : Ataque
 
     public IEnumerator IniciaRajadaEletrica()
     {
+        anim.SetFloat("velocidade", 0);
+
+        inimigoPersegue.SetPodeAndar(false);
+
+        SetPodeAtacar(false);
+
         aS.clip = somBioxugo;
         aS.Play();
 
@@ -148,6 +155,10 @@ public class Bioxugo_Ataque : Ataque
        yield return new WaitForSeconds(0.3f);
        OndaEletrica[2].SetActive(false);
 
+        anim.SetFloat("velocidade", 0);
+
+        anim.SetTrigger("Idle");
+
        yield return new WaitForSeconds(2f);
 
        inimigoPersegue.SetPodeAndar(true);
@@ -156,22 +167,21 @@ public class Bioxugo_Ataque : Ataque
 
     }
 
-    public void AtivaRaio()
+    public void AnimaÃ§Ã£oRaio()
     {
-        if (GetPodeAtacar() == true)
-        {
-            anim.SetTrigger("Attack_Plus");
+        anim.SetTrigger("Attack_Plus");
 
-            inimigoPersegue.SetPodeAndar(false);
+        anim.SetFloat("velocidade", 0);
 
-            SetPodeAtacar(false);
-
-            inimigoVida.ImuneDano();
-        }
+        inimigoPersegue.SetPodeAndar(false);
     }
-    
     IEnumerator IniciaRaio()
     {
+        anim.SetFloat("velocidade", 0);
+        inimigoPersegue.SetPodeAndar(false);
+
+        inimigoVida.ImuneDano();
+
         aS.clip = somRaio;
         aS.Play();
 
@@ -194,11 +204,13 @@ public class Bioxugo_Ataque : Ataque
         yield return new WaitForSeconds(0.3f);
         OndaEletrica[5].SetActive(false);
 
-        yield return new WaitForSeconds(1.5f);
+        anim.SetFloat("velocidade", 0);
+
+        anim.SetTrigger("Idle");
+
+        yield return new WaitForSeconds(2f);
 
         inimigoVida.ImuneDano();
-
-        yield return new WaitForSeconds(1.5f);
 
         inimigoPersegue.SetPodeAndar(true);
 

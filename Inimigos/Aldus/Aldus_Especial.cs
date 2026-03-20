@@ -25,6 +25,7 @@ public class Aldus_Especial : MonoBehaviour
     public AudioClip especialAudio;
     public GameObject bisturi;
     public GameObject seringa;
+    bool podeDispararAtaqueEspecial = false;
 
     public void SetEspecial(bool _permitirEspecial)
     {
@@ -68,12 +69,19 @@ public class Aldus_Especial : MonoBehaviour
                 }
             }
 
-            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.C))
+            if (podeDispararAtaqueEspecial == false)
             {
-                if(contaAtaques < 3)
+                if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.C))
                 {
-                    contaAtaques++;
-                    StartCoroutine(Especial());
+                    if (contaAtaques < 4)
+                    {
+                        contaAtaques++;
+                    }
+                    else
+                    {
+                        podeDispararAtaqueEspecial = true;
+                        StartCoroutine(Especial());
+                    }
                 }
             }
         }
@@ -110,20 +118,20 @@ public class Aldus_Especial : MonoBehaviour
 
     public IEnumerator Especial()
     {
-        if (contaAtaques == 3)
+        if (contaAtaques == 4 && podeDispararAtaqueEspecial == true)
         {
-            contaAtaques = 0;
-
             SetEspecial(true);
 
             cameraSegue.CameraAldusEspecial();
 
             anim.SetTrigger("Special");
 
+            efeitosVisuais.ParaMusica();
+
             aS.clip = especialAudio;
             aS.Play();
 
-            yield return new WaitForSeconds(3.5f);
+            yield return new WaitForSeconds(3f);
 
             efeitosVisuais.AldusEspecial();
             cameraSegue.camNormal();
@@ -139,8 +147,13 @@ public class Aldus_Especial : MonoBehaviour
                 disparar = true;
             }
 
+            yield return new WaitForSeconds(4f);
+
             SetEspecial(false);
 
+            podeDispararAtaqueEspecial = false;
+
+            contaAtaques = 0;
         }
     }
 

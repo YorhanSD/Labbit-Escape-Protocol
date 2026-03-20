@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class Super_CenouraAzul : Item
 {
+    public override void GirarCenoura()
+    {
+        if (anim != null)
+        {
+            anim.SetTrigger("Girar");
+        }
+        else
+        {
+            Debug.Log("Animação girar é nula");
+        }
+    }
     public override void SetNome(string _nome)
     {
         base.SetNome(_nome);
@@ -36,6 +47,7 @@ public class Super_CenouraAzul : Item
     {
         return base.GetCura();
     }
+    
     public override void OnTriggerEnter2D(Collider2D _inimigo)
     {
         base.OnTriggerEnter2D(_inimigo);
@@ -51,7 +63,7 @@ public class Super_CenouraAzul : Item
         {
             _inimigo.gameObject.SetActive(false);
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
 
             _inimigo.gameObject.SetActive(true);
         }

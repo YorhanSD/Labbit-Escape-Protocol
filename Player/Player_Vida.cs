@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+//using UnityEditor.Localization.Plugins.XLIFF.V20;
 
 public class Player_Vida : MonoBehaviour
-{ 
+{
+    public PontuacaoControle pC;
+
     public string restart;
 
     public TextMeshProUGUI textoVida;
@@ -41,12 +44,21 @@ public class Player_Vida : MonoBehaviour
 
     public AudioClip audioMorte;
 
-
+    [System.Obsolete]
     private void Start()
     {
         aS = GetComponent<AudioSource>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        pC = FindObjectOfType<PontuacaoControle>();
+
+        //Teclados e Mouses não podem mais interagir com o Slider
+
+        barraDeVida.interactable = false;
+        barraDeApoio.interactable = false;
+
+        barraDeVida.navigation = new Navigation { mode = Navigation.Mode.None };
+        barraDeApoio.navigation = new Navigation { mode = Navigation.Mode.None };
     }
 
     public void TocaMusicaCura()
@@ -68,48 +80,23 @@ public class Player_Vida : MonoBehaviour
         return imuneDano;
     }
 
-    void Update()
-    {
-        VerificaVida();
-        /*
-        if (barraDeVida.value <= 0)
-        {
-            if(playerBencaos.GetRessuscitar() == true)
-            {
-                barraDeVida.value += 100;
-
-                sr.color = Color.white;
-
-                playerBencaos.SetRessuscitar(false);
-            }
-            else
-            {
-                if (morrendo == false)
-                {
-                    morrendo = true;
-                    playerSuffering.PlayerParalizado();
-                    anim.SetTrigger("Die");
-                    aS.clip = audioMorte;
-                    aS.Play();
-                }
-            }
-        }
-        */
-    }
     public bool VerificaVida()
     {
         if (barraDeVida.value <= 0)
         {
             if (playerBencaos.GetRessuscitar() == true)
             {
-                barraDeVida.value += 100;
+                barraDeVida.value += 50;
                 sr.color = Color.white;
                 playerBencaos.SetRessuscitar(false);
+                playerBencaos.tocaRessuscitar();
 
                 return false;
             }
             else
             {
+                pC.AdicionaPontosNegativosPorMorte(2000);
+                pC.MostraTotalDePontos();
                 playerSuffering.PlayerParalizado();
                 anim.SetTrigger("Die");
                 aS.clip = audioMorte;

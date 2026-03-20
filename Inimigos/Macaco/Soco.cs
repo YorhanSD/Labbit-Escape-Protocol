@@ -19,6 +19,6 @@ public class Soco : MonoBehaviour
 
     private void FixedUpdate() 
     {
-        rigid.velocity = direcao * velocidade;
+        rigid.linearVelocity = direcao * velocidade;
     }
 }

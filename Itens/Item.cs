@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public abstract class Item : MonoBehaviour
@@ -8,26 +10,42 @@ public abstract class Item : MonoBehaviour
     public string nome;
     public string descricao;
     public string habilidade;
-    public bool eSuper;
+    public bool ePerfurante;
     public int quantidade;
     public int dano;
     public int cura;
-    public float velocidade = 80f;
+    public float velocidade = 35f; //35f é o limite seguro para não causar bugs de colisão
     public Rigidbody2D rigid;
     private Vector2 direcao;
-    public void Start()
+    [SerializeField] public Animator anim;
+
+    public void Awake()
     {
+        anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
+    }
+    public void VerificaCenouraPerfurante()
+    {
+        if (ePerfurante)
+        {
+            StartCoroutine(DestruicaoConometrada());
+        }
     }
     public void FixedUpdate() //Velocidade da cenoura
     {
-        rigid.velocity = direcao * velocidade;
+        rigid.linearVelocity = direcao * velocidade;
+    }
+    public virtual void GirarCenoura()
+    {
+        anim.SetTrigger("Girar");
     }
     public void Direcao(Vector2 recebeDirecao) //Direcao da cenoura
     {
         direcao = recebeDirecao;
     }
+
     //--- Metodos Getters e Setters ---//
+
     public virtual void SetNome(string _nome) //Recebe o nome da cenoura
     {
         nome = _nome;
@@ -70,13 +88,9 @@ public abstract class Item : MonoBehaviour
     }
     public virtual void OnTriggerEnter2D(Collider2D _other)
     {
-        if (_other.CompareTag("Inimigo") && eSuper == false)
+        if (_other.CompareTag("Inimigo") && ePerfurante == false)
         {
             DestruirCenoura();
-        }
-        else
-        {
-            StartCoroutine(destruicaoConometrada());
         }
 
         if (_other.CompareTag("Parede"))
@@ -89,9 +103,10 @@ public abstract class Item : MonoBehaviour
         Destroy(gameObject); //Destroi cenoura
    }
 
-   IEnumerator destruicaoConometrada()
+   IEnumerator DestruicaoConometrada()
     {
         yield return new WaitForSecondsRealtime(2);
+        Destroy(gameObject);
     }
 
 }

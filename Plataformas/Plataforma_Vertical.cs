@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Plataforma_Vertical : Movimento
 {
-    void Update()
+    void FixedUpdate()
     {
-        MovimentoVertical();
+        MovimentoVertical(); //Plataformas devem usar FixedUpdate e Rigidbody com Kinematic
     }
 
     public override bool MovimentoVertical()

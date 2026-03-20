@@ -8,6 +8,7 @@ public class Dano_Eletrico : MonoBehaviour
     Controle_Emocional controleEmocional;
     public int danoEletrico;
 
+    [System.Obsolete]
     public void Awake()
     {
         playerVida = GameObject.FindObjectOfType<Player_Vida>();
@@ -20,7 +21,8 @@ public class Dano_Eletrico : MonoBehaviour
         {
             playerVida.SetImuneDano(true);
             playerVida.barraDeVida.value -= danoEletrico;
-            controleEmocional.Medo(70);
+            controleEmocional.Medo(50);
+            playerVida.VerificaVida();
         }
     }
 }

@@ -12,6 +12,7 @@ public class Presa_Urso : MonoBehaviour
     public AudioSource aS;
     public AudioClip somDispara;
 
+    [System.Obsolete]
     void Awake()
     {
         playerVida = GameObject.FindObjectOfType<Player_Vida>();
@@ -28,7 +29,7 @@ public class Presa_Urso : MonoBehaviour
 
             playerVida.SetImuneDano(true);
 
-            playerMovimento.SetPlayerVelocidade(0);
+            //playerMovimento.SetPlayerVelocidade(0);
             playerMovimento.GetPlayerVelocidade();
             playerMovimento.SetPlayerImobilizado(true);
             controleEmocional.Medo(50);
@@ -42,9 +43,9 @@ public class Presa_Urso : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         playerVida.barraDeVida.value -= danoPresa;
+        playerVida.VerificaVida();
         yield return new WaitForSeconds(4);
         playerMovimento.SetPlayerImobilizado(false);
         anim.SetTrigger("Desativar");
-
     }
 }

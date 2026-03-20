@@ -13,6 +13,7 @@ public class Teletransporte : MonoBehaviour
 
     public AudioSource aS;
     public AudioClip openDoor;
+    public AudioClip somPortaTrancada;
 
     public GameObject cam;
     public GameObject tela;
@@ -39,8 +40,7 @@ public class Teletransporte : MonoBehaviour
         {
             if(portaTrancada == false)
             {
-                aS.clip = openDoor;
-                aS.Play();
+                SomAbrirPorta();
 
                 PlayerTeleporte();
             }
@@ -49,15 +49,33 @@ public class Teletransporte : MonoBehaviour
                 if(playerPegaItens.pegouChave == true)
                 {
                     playerPegaItens.pegouChave = false;
+
+                    SomAbrirPorta();
+
                     PlayerTeleporte();
                 }
                 else
                 {
+                    SomPortaTrancada();
+
                     feedbackPorta.SetActive(true);
                 }
             }
         }
     }
+
+    public void SomAbrirPorta()
+    {
+        aS.clip = openDoor;
+        aS.Play();
+    }
+
+    public void SomPortaTrancada()
+    {
+        aS.clip = somPortaTrancada;
+        aS.Play();
+    }
+
     private void OnTriggerExit2D(Collider2D _player)
     {
         if (_player.gameObject.tag == "Player" && playerPegaItens.pegouChave == false && feedbackPorta != null)
@@ -77,12 +95,11 @@ public class Teletransporte : MonoBehaviour
             playerBencaos.SetImunidadeToxicidade(false);
             playerBencaos.SetImunidadeUltravioleta(false);
             playerBencaos.SetRegeneracao(false);
-            playerBencaos.SetRessuscitar(false);
         }
 
         if (ultimaPorta)
         {
-            SceneManager.LoadScene("Cutscene_Final");
+            SceneManager.LoadScene(carregaCena);
         }
     }
 }

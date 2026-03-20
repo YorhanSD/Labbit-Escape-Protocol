@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class Plataforma_Horizontal : Movimento
 {
-    void Update()
+    private void Start()
     {
-        MovimentoHorizontal();
+        SetPodeAndar(true);
+    }
+    void FixedUpdate()
+    {
+        MovimentoHorizontalPlataforma();
     }
 
-    public override bool MovimentoHorizontal()
+    public override bool MovimentoHorizontalPlataforma()
     {
-        return base.MovimentoHorizontal();
+        return base.MovimentoHorizontalPlataforma();
     }
 }

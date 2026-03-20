@@ -74,7 +74,7 @@ public class Camera_Segue : MonoBehaviour
     {
         segueVelocidade = 1f;
 
-        if (cam.orthographicSize > 18)
+        if (cam.orthographicSize > 21)
         {
             cam.orthographicSize -= 3f * Time.deltaTime;
         }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.Localization.Settings;
 
 public class Seleciona_Itens : MonoBehaviour
 {
@@ -91,6 +91,152 @@ public class Seleciona_Itens : MonoBehaviour
         }
     }
 
+    public void TraducaoDica(Item _cenoura)
+    {
+        string idioma = LocalizationSettings.SelectedLocale.Identifier.Code;
+
+        if (_cenoura.GetNome() == "Super Cenoura Preta")
+        {
+            switch (idioma)
+            {
+                case "en":
+                case "en-US":
+                    _cenoura.SetHabilidade("[X] Piercing Attack [C] Activate Revive");
+                    break;
+
+                case "de":
+                case "de-DE":
+                    _cenoura.SetHabilidade("[X] Durchdringender Angriff [C] Wiederbeleben aktivieren");
+                    break;
+
+                case "es-AR":
+                    _cenoura.SetHabilidade("[X] Ataque Perforante [C] Activa Resucitar");
+                    break;
+
+                case "pt":
+                case "pt-BR":
+                    _cenoura.SetHabilidade("[X] Ataque Perfurante [C] Ativa Ressuscitar");
+                    break;
+
+                default:
+                    _cenoura.SetHabilidade("[X] Ataque Perfurante [C] Ativa Ressuscitar");
+                    break;
+            }
+        }
+        else if (_cenoura.GetNome() == "Super Cenoura Laranja")
+        {
+            switch (idioma)
+            {
+                case "en":
+                case "en-US":
+                    _cenoura.SetHabilidade("[X] When Hitting Target, Heals You [C] Activate Regenerate");
+                    break;
+
+                case "de":
+                case "de-DE":
+                    _cenoura.SetHabilidade("[X] Wenn Ziel getroffen, heilt es dich [C] Regenerieren aktivieren");
+                    break;
+
+                case "es-AR":
+                    _cenoura.SetHabilidade("[X] Al Impactar el Objetivo, Te Cura [C] Activa Regenerar");
+                    break;
+
+                case "pt":
+                case "pt-BR":
+                    _cenoura.SetHabilidade("[X] Ao Atintir Alvo, Te Cura [C] Ativa Regenerar");
+                    break;
+
+                default:
+                    _cenoura.SetHabilidade("[X] Ao Atintir Alvo, Te Cura [C] Ativa Regenerar");
+                    break;
+            }
+        }
+        else if (_cenoura.GetNome() == "Super Cenoura Azul")
+        {
+            switch (idioma)
+            {
+                case "en":
+                case "en-US":
+                    _cenoura.SetHabilidade("[X] Target Disappears for Moments [C] Immunity to Lasers");
+                    break;
+
+                case "de":
+                case "de-DE":
+                    _cenoura.SetHabilidade("[X] Ziel verschwindet für kurze Zeit [C] Immunität gegen Laser");
+                    break;
+
+                case "es-AR":
+                    _cenoura.SetHabilidade("[X] Objetivo Desaparece Por Instantes [C] Inmunidad a Láseres");
+                    break;
+
+                case "pt":
+                case "pt-BR":
+                    _cenoura.SetHabilidade("[X] Alvo Some Por Instantes [C] Imunidade a Lasers");
+                    break;
+
+                default:
+                    _cenoura.SetHabilidade("[X] Alvo Some Por Instantes [C] Imunidade a Lasers");
+                    break;
+            }
+        }
+        else if (_cenoura.GetNome() == "Super Cenoura Verde")
+        {
+            switch (idioma)
+            {
+                case "en":
+                case "en-US":
+                    _cenoura.SetHabilidade("[X] Attack [C] Immunity to Toxicity");
+                    break;
+
+                case "de":
+                case "de-DE":
+                    _cenoura.SetHabilidade("[X] Angriff [C] Immunität gegen Gift");
+                    break;
+
+                case "es-AR":
+                    _cenoura.SetHabilidade("[X] Ataque [C] Inmunidad a Toxicidad");
+                    break;
+
+                case "pt":
+                case "pt-BR":
+                    _cenoura.SetHabilidade("[X] Ataque [C] Imunidade a Toxicidade");
+                    break;
+
+                default:
+                    _cenoura.SetHabilidade("[X] Ataque [C] Imunidade a Toxicidade");
+                    break;
+            }
+        }
+        else
+        {
+            switch (idioma)
+            {
+                case "en":
+                case "en-US":
+                    _cenoura.SetHabilidade("[X] Attack [C] Heal Life");
+                    break;
+
+                case "de":
+                case "de-DE":
+                    _cenoura.SetHabilidade("[X] Angreifen [C] Leben heilen");
+                    break;
+
+                case "es-AR":
+                    _cenoura.SetHabilidade("[X] Atacar [C] Curar Vida");
+                    break;
+
+                case "pt":
+                case "pt-BR":
+                    _cenoura.SetHabilidade("[X] Atacar [C] Curar Vida");
+                    break;
+
+                default:
+                    _cenoura.SetHabilidade("[X] Atacar [C] Curar Vida");
+                    break;
+            }
+        }
+    }
+
     bool MostraInterface(Item itemSelecionado)
     {
         foreach (Item item in inventario.listaItens) // Procura na lista de itens o novo item
@@ -98,6 +244,8 @@ public class Seleciona_Itens : MonoBehaviour
             if (item.GetNome() == itemSelecionado.GetNome()) // Verifica se ja existe um item com esse nome
             {
                 itemQuantidade.text = "" + itemSelecionado.GetQuantidade();
+
+                TraducaoDica(item);
 
                 interfaceTextos.SetRecebeMenssagem(item.GetHabilidade());
 
@@ -107,6 +255,8 @@ public class Seleciona_Itens : MonoBehaviour
 
         return false;
     }
+
+    
 
     bool InventarioAutomatico(Item itemSelecionado)
     {

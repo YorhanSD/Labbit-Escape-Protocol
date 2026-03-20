@@ -19,15 +19,18 @@ public class CheckPoint : MonoBehaviour
     {
         SaveGame carregar = JogoSalvo();
 
-        if (JogoSalvo() != null)
+        if (carregar != null && carregar.GetJaJogou())
         {
-            player.transform.position = new Vector2(carregar.GetPlayerPosicaoX(), carregar.GetPlayerPosicaoY());
+            player.transform.position = new Vector2(
+                carregar.GetPlayerPosicaoX(),
+                carregar.GetPlayerPosicaoY()
+            );
         }
     }
 
     private void OnTriggerEnter2D(Collider2D _check)
     {
-        if(_check.gameObject.tag == "Player")
+        if (_check.gameObject.tag == "Player")
         {
             Salvar();
             feedbackSalvamento.SetActive(true);
@@ -40,21 +43,131 @@ public class CheckPoint : MonoBehaviour
             feedbackSalvamento.SetActive(false);
         }
     }
+    public void SalvaCronometro(int _cronometro)
+    {
+        SaveGame save = JogoSalvo();
+        if (save == null)
+            save = new SaveGame();
+
+        save.minuto = _cronometro;
+
+        SalvarJogoBinario(save);
+    }
+
+    public void SalvaNumeroDeVezesQueMorreu(int _numero)
+    {
+        SaveGame save = JogoSalvo();
+        if (save == null)
+            save = new SaveGame();
+
+        save.saveMortes = _numero;
+
+        SalvarJogoBinario(save);
+    }
+
+    public void SalvaCenouraColetadas(int _numero)
+    {
+        SaveGame save = JogoSalvo();
+        if (save == null)
+            save = new SaveGame();
+
+        save.saveCenourasColetadas = _numero;
+
+        SalvarJogoBinario(save);
+    }
+
+    public void SalvaInimigosAbatidos(int _numero)
+    {
+        SaveGame save = JogoSalvo();
+        if (save == null)
+            save = new SaveGame();
+
+        save.saveInimigosAbatidos = _numero;
+
+        SalvarJogoBinario(save);
+    }
+
+    public void SalvaDNAsColetados(int _numero)
+    {
+        SaveGame save = JogoSalvo();
+        if (save == null)
+            save = new SaveGame();
+
+        save.saveDNAsColetados = _numero;
+
+        SalvarJogoBinario(save);
+    }
+
+    public void SalvarConquistaI()
+    {
+        SalvarConquista(save => save.conquistaIfeita = true);
+    }
+
+    public void SalvarConquistaII()
+    {
+        SalvarConquista(save => save.conquistaIIfeita = true);
+    }
+
+    public void SalvarConquistaIII()
+    {
+        SalvarConquista(save => save.conquistaIIIfeita = true);
+    }
+
+    public void SalvarConquistaIV()
+    {
+        SalvarConquista(save => save.conquistaIVfeita = true);
+    }
+
+    public void SalvarConquistaV()
+    {
+        SalvarConquista(save => save.conquistaVfeita = true);
+    }
+
+    public void SalvarConquistaVI()
+    {
+        SalvarConquista(save => save.conquistaVIfeita = true);
+    }
+
+    public void SalvarConquistaVII()
+    {
+        SalvarConquista(save => save.conquistaVIIfeita = true);
+    }
+
+    public void SalvarConquistaVIII()
+    {
+        SalvarConquista(save => save.conquistaVIIIfeita = true);
+    }
+    public void SalvarConquistaIX()
+    {
+        SalvarConquista(save => save.conquistaIXfeita = true);
+    }
+
+    private void SalvarConquista(System.Action<SaveGame> aplicaConquista)
+    {
+        SaveGame save = JogoSalvo();
+        if (save == null)
+            save = new SaveGame();
+
+        aplicaConquista(save);
+
+        SalvarJogoBinario(save);
+    }
 
     public void Salvar()
     {
-        SaveGame newSave = new SaveGame();
+        //Carrega save existente ou cria um novo
+        SaveGame save = JogoSalvo();
+        if (save == null)
+            save = new SaveGame();
 
-        player.transform.position = new Vector2(player.transform.position.x, player.transform.position.y);
+        //Salva dados básicos
+        save.SetJaJogou(true);
+        save.SetPlayerPosicaoX(player.transform.position.x);
+        save.SetPlayerPosicaoY(player.transform.position.y);
 
-        newSave.SetPlayerPosicaoX(player.transform.position.x);
-        newSave.SetPlayerPosicaoY(player.transform.position.y);
+        // AGORA SIM salva no disco
+        SalvarJogoBinario(save);
 
-        Debug.Log("PosicaoPlayerX : " + newSave.GetPlayerPosicaoX() + "PosicaoPlayerY : " + newSave.GetPlayerPosicaoY());
-
-        SalvarJogoBinario(newSave);
-
-        SaveGame carregar = JogoSalvo();
     }
 
     public void SalvarJogoBinario(SaveGame _newSave)
@@ -71,7 +184,6 @@ public class CheckPoint : MonoBehaviour
 
         Debug.Log("Jogo Salvo!");
     }
-
     public SaveGame JogoSalvo()
     {
         BinaryFormatter bF = new BinaryFormatter();
@@ -80,7 +192,7 @@ public class CheckPoint : MonoBehaviour
 
         FileStream arquivo;
 
-        if(File.Exists(caminho + "/labbitJogoSalvo.save"))
+        if (File.Exists(caminho + "/labbitJogoSalvo.save"))
         {
             arquivo = File.Open(caminho + "/labbitJogoSalvo.save", FileMode.Open);
 

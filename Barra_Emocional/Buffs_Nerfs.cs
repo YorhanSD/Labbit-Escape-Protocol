@@ -18,25 +18,25 @@ public class Buffs_Nerfs : MonoBehaviour
     [SerializeField] private Super_CenouraVerde superCenouraVerde;
     [SerializeField] private Super_CenouraPreta superCenouraPreta;
 
-    
-
+    [System.Obsolete]
     public void CoragemMaxima() //Metodo coragem maxima
     {
         playerMovimento.SetPlayerVelocidade(20);
-        playerMovimento.SetPlayerForcaPulo(45);
+        playerMovimento.SetPlayerForcaPulo(37);
 
         buffarAndNerffarCenouras.BuffarDanoCenouras();
     }
 
+    [System.Obsolete]
     public void AtributosNormais() //Atributos Padroes
     {
-        playerMovimento.SetPlayerVelocidade(15);
-        playerMovimento.SetPlayerForcaPulo(35);
+        playerMovimento.SetPlayerVelocidade(14);
+        playerMovimento.SetPlayerForcaPulo(33);
 
-        cenouraLaranja.SetDano(10);
+        //cenouraLaranja.SetDano(10);
         cenouraLaranja.SetCura(30);
 
-        cenouraPreta.SetDano(30);
+        //cenouraPreta.SetDano(30);
         cenouraPreta.SetCura(10);
 
         //cenouraVerde.SetDano(20);
@@ -48,18 +48,21 @@ public class Buffs_Nerfs : MonoBehaviour
         superCenouraLaranja.SetDano(10);
         superCenouraLaranja.SetCura(30);
 
-        superCenouraPreta.SetDano(50);
+        superCenouraPreta.SetDano(40);
+        superCenouraPreta.SetCura(0);
 
-        superCenouraVerde.SetDano(40);
+        superCenouraVerde.SetDano(60);
+        superCenouraVerde.SetCura(0);
 
-        superCenouraAzul.SetDano(20);
-        superCenouraAzul.SetCura(40);
+        superCenouraAzul.SetDano(30);
+        superCenouraAzul.SetCura(30);
     }
 
+    [System.Obsolete]
     public void MedoMaximo() //Medo Maximo
     {
-        playerMovimento.SetPlayerVelocidade(30);
-        playerMovimento.SetPlayerForcaPulo(40);
+        playerMovimento.SetPlayerVelocidade(26);
+        playerMovimento.SetPlayerForcaPulo(35);
 
         buffarAndNerffarCenouras.BuffarCuraCenouras();
     }

@@ -31,7 +31,10 @@ public class Plataforma_Temporaria : MonoBehaviour
     public IEnumerator EsperaAudio()
     {
         yield return new WaitForSeconds(1f);
-        aS.clip = somQuebrando;
-        aS.Play();
+        if (aS != null)
+        {
+            aS.clip = somQuebrando;
+            aS.Play();
+        }
     }
 }

@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class Cenoura_Preta : Item
 {
-   public override void SetNome(string _nome)
+    public override void GirarCenoura()
+    {
+        if (anim != null)
+        {
+            anim.SetTrigger("Girar");
+        }
+        else
+        {
+            Debug.Log("Animação girar é nula");
+        }
+    }
+    public override void SetNome(string _nome)
     {
         base.SetNome(_nome);
     }

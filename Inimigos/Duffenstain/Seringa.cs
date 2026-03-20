@@ -18,6 +18,8 @@ public class Seringa : MonoBehaviour
     private Rigidbody2D rigd2D;
     private Vector2 direcao;
 
+    public bool inverter;
+
     public void Start()
     {
         seringaSprite = GetComponent<SpriteRenderer>();
@@ -34,10 +36,15 @@ public class Seringa : MonoBehaviour
         {
             seringaSprite.flipX = false;
         }
+
+        if(inverter && this.gameObject.tag == "Bala")
+        {
+            seringaSprite.flipX = !seringaSprite.flipX;
+        }
     }
     public void FixedUpdate()
     {
-        rigd2D.velocity = direcao * velocidade;
+        rigd2D.linearVelocity = direcao * velocidade;
     }
     public void OnTriggerEnter2D(Collider2D _player)
     {

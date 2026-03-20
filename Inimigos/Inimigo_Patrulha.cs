@@ -4,28 +4,26 @@ using UnityEngine;
 
 public class Inimigo_Patrulha : Movimento
 {
-    private bool parar = false;
-
-    public void SetPararInimigo(bool _parar)
+    private void Start()
     {
-        parar = _parar;
+        SetPodeAndar(true);
     }
-
-    public bool GetParar()
+    public override bool GetPodeAndar()
     {
-        return parar;
+        return base.GetPodeAndar();
     }
-
     void FixedUpdate()
     {
-        MovimentoHorizontal();
-    }
-
-    public override bool MovimentoHorizontal()
-    {
-        if (GetParar() == false)
+        if (GetPodeAndar() == true)
         {
-            return base.MovimentoHorizontal();
+            MovimentoHorizontalInimigo();
+        }
+    }
+    public override bool MovimentoHorizontalInimigo()
+    {
+        if (GetPodeAndar() == true)
+        {
+            return base.MovimentoHorizontalInimigo();
         }
 
         return false;

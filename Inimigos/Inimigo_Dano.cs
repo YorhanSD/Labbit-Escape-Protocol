@@ -38,6 +38,7 @@ public class Inimigo_Dano : MonoBehaviour
                 playerVida.SetImuneDano(true);
                 playerVida.barraDeVida.value -= danoInimigo;
                 controleEmocional.Medo(50);
+                playerVida.VerificaVida();
                 SomAttack();
             }
         }

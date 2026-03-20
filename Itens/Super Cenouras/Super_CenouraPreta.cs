@@ -4,7 +4,17 @@ using UnityEngine;
 
 public class Super_CenouraPreta : Item
 {
-    
+    public override void GirarCenoura()
+    {
+        if (anim != null)
+        {
+            anim.SetTrigger("Girar");
+        }
+        else
+        {
+            Debug.Log("Animação girar é nula");
+        }
+    }
     public override void SetNome(string _nome)
     {
         base.SetNome(_nome);

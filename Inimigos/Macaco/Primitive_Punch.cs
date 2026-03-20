@@ -23,11 +23,14 @@ public class Primitive_Punch : MonoBehaviour
     public float pocicaoAreaAtaque_X;
     public float pocicaoAreaAtaque_Y;
 
+    public float forcaEmpurraoX;
+    public float forcaEmpurraoY;
+
     private Animator anim;
     public AudioSource audioSource;
     public AudioClip somAtaque;
 
-    [SerializeField] private Inimigo_Patrulha inimigoPatrulha;
+    [SerializeField] private Movimento inimigoMovimento;
 
     private void Start()
     {
@@ -51,23 +54,16 @@ public class Primitive_Punch : MonoBehaviour
 
     private bool ControlePosicao()
     {
-        if (inimigoPatrulha != null && inimigoPatrulha.posicaoInicial > gameObject.transform.position.x)
+        if (inimigoMovimento != null && inimigoMovimento.moveDireita)
         {
             areaAtaque.localPosition = new Vector2(pocicaoAreaAtaque_X, pocicaoAreaAtaque_Y);
-
             areaDano.localPosition = new Vector2(pocicaoAreaDano_X, pocicaoAreaDano_Y);
-
             ladoDireito = true;
-
-            return false;
         }
-
-        if (inimigoPatrulha != null && inimigoPatrulha.posicaoFinal < gameObject.transform.position.x)
+        else
         {
             areaAtaque.localPosition = new Vector2(-pocicaoAreaAtaque_X, pocicaoAreaAtaque_Y);
-
             areaDano.localPosition = new Vector2(-pocicaoAreaDano_X, pocicaoAreaDano_Y);
-
             ladoDireito = false;
         }
 
@@ -82,9 +78,9 @@ public class Primitive_Punch : MonoBehaviour
 
     private IEnumerator AnimacaoAtaque()
     {
-        if (inimigoPatrulha != null)
+        if (inimigoMovimento != null)
         {
-            inimigoPatrulha.SetPararInimigo(true);
+            inimigoMovimento.SetPodeAndar(false);
         }
 
         anim.SetTrigger(animacaoAtaque);
@@ -98,12 +94,34 @@ public class Primitive_Punch : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(2);
 
-        if (inimigoPatrulha != null)
+        if (inimigoMovimento != null)
         {
-            inimigoPatrulha.SetPararInimigo(false);
+            inimigoMovimento.SetPodeAndar(true);
         }
 
         proximoAtaque = true;
     }
-    
+
+    [System.Obsolete]
+    private void AplicarEmpurrao()
+    {
+        Collider2D hit = Physics2D.OverlapCircle(areaDano.position, raioArea, playerLayer);
+
+        if (hit != null)
+        {
+            Rigidbody2D rbPlayer = hit.GetComponent<Rigidbody2D>();
+
+            if (rbPlayer != null)
+            {
+                Vector2 direcao;
+
+                if (ladoDireito)
+                    direcao = new Vector2(forcaEmpurraoX, forcaEmpurraoY);
+                else
+                    direcao = new Vector2(-forcaEmpurraoX, forcaEmpurraoY);
+
+                rbPlayer.velocity = direcao;
+            }
+        }
+    }
 }
